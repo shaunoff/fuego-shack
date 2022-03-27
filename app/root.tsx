@@ -13,7 +13,16 @@ import tailwindStylesheetUrl from "./styles/tailwind.css";
 import { getUser } from "./session.server";
 
 export const links: LinksFunction = () => {
-  return [{ rel: "stylesheet", href: tailwindStylesheetUrl }];
+  return [
+    {
+      rel: "preload",
+      as: "font",
+      href: "/fonts/Quicksand.ttf",
+      type: "font/ttf",
+      crossOrigin: "anonymous",
+    },
+    { rel: "stylesheet", href: tailwindStylesheetUrl },
+  ];
 };
 
 export const meta: MetaFunction = () => ({
