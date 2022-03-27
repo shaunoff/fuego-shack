@@ -55,8 +55,9 @@ const Header = ({ mobileMenuOpen, setMobileMenuOpen }: HeaderProps) => {
           </div>
           <div className="ml-2 flex items-center space-x-4 sm:ml-6 sm:space-x-6">
             <Form action="/logout" method="post" className="h-6 w-6">
-              <button type="submit">
+              <button data-test-id="logout-button" type="submit" name="logout">
                 <LogoutIcon className="h-6 w-6" />
+                Logout
               </button>
             </Form>
           </div>
