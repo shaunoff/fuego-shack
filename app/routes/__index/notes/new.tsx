@@ -1,23 +1,47 @@
-import * as React from "react";
-import { Form, json, redirect, useActionData } from "remix";
-import type { ActionFunction } from "remix";
+import {
+  Form,
+  unstable_parseMultipartFormData,
+  useActionData,
+  json,
+  redirect,
+} from "remix";
+import type { ActionFunction, UploadHandler } from "remix";
 
 import { createNote } from "~/models/note.server";
 import { requireUserId } from "~/session.server";
+import { useEffect, useRef } from "react";
+
+import { uploadCloudinaryImage } from "~/utils/utils.server";
 
 type ActionData = {
   errors?: {
     title?: string;
     body?: string;
+    image?: string;
   };
 };
 
 export const action: ActionFunction = async ({ request }) => {
   const userId = await requireUserId(request);
 
-  const formData = await request.formData();
+  const uploadHandler: UploadHandler = async ({ name, stream }) => {
+    if (name !== "img") {
+      stream.resume();
+      return;
+    }
+    const uploadedImage = await uploadCloudinaryImage(stream);
+
+    return uploadedImage.url;
+  };
+
+  const formData = await unstable_parseMultipartFormData(
+    request,
+    uploadHandler
+  );
+
   const title = formData.get("title");
   const body = formData.get("body");
+  const imageUrl = formData.get("img");
 
   if (typeof title !== "string" || title.length === 0) {
     return json<ActionData>(
@@ -33,17 +57,29 @@ export const action: ActionFunction = async ({ request }) => {
     );
   }
 
-  const note = await createNote({ title, body, userId });
+  if (typeof imageUrl !== "string" || imageUrl.length === 0) {
+    return json<ActionData>(
+      { errors: { image: "Image is required" } },
+      { status: 400 }
+    );
+  }
+
+  const note = await createNote({
+    title,
+    body,
+    userId,
+    imageUrl,
+  });
 
   return redirect(`/notes/${note.id}`);
 };
 
 export default function NewNotePage() {
   const actionData = useActionData() as ActionData;
-  const titleRef = React.useRef<HTMLInputElement>(null);
-  const bodyRef = React.useRef<HTMLTextAreaElement>(null);
+  const titleRef = useRef<HTMLInputElement>(null);
+  const bodyRef = useRef<HTMLTextAreaElement>(null);
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (actionData?.errors?.title) {
       titleRef.current?.focus();
     } else if (actionData?.errors?.body) {
@@ -53,13 +89,14 @@ export default function NewNotePage() {
 
   return (
     <Form
-      method="post"
       style={{
         display: "flex",
         flexDirection: "column",
         gap: 8,
         width: "100%",
       }}
+      method="post"
+      encType="multipart/form-data"
     >
       <div>
         <label className="flex w-full flex-col gap-1">
@@ -101,7 +138,10 @@ export default function NewNotePage() {
           </div>
         )}
       </div>
-
+      <div>
+        <label htmlFor="img-field">Image to upload</label>
+        <input id="img-field" type="file" name="img" accept="image/*" />
+      </div>
       <div className="text-right">
         <button
           type="submit"
