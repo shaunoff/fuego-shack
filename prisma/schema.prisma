@@ -33,6 +33,39 @@ model Note {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
-  userId String
+  user     User    @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  userId   String
+  imageUrl String?
+
+  Brand   Brand?  @relation(fields: [brandId], references: [id])
+  brandId String?
+}
+
+model Brand {
+  id          String  @id @default(cuid())
+  name        String
+  description String
+  city        String
+  state       String
+  country     String
+  logoUrl     String?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  notes Note[]
+  Item  Item[]
+}
+
+model Item {
+  id          String  @id @default(cuid())
+  title       String
+  description String
+  imageUrl    String?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  Brand   Brand?  @relation(fields: [brandId], references: [id])
+  brandId String?
 }
