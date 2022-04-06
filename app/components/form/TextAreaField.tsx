@@ -1,17 +1,15 @@
-import Input from "./Input";
+import TextArea, { TextAreaProps } from "../shared/TextArea";
 import { useField } from "remix-validated-form";
 
-type FormInputProps = {
-  name: string;
-  label: string;
+type FormInputProps = TextAreaProps & {
   isRequired?: boolean;
+  name: string;
 };
 
-const FormInput = ({ name, label, isRequired, ...rest }: FormInputProps) => {
+const TextAreaField = ({ name, isRequired, ...rest }: FormInputProps) => {
   const { getInputProps, error, touched } = useField(name);
   return (
-    <Input
-      label={label}
+    <TextArea
       error={error}
       {...getInputProps({
         id: name,
@@ -22,4 +20,4 @@ const FormInput = ({ name, label, isRequired, ...rest }: FormInputProps) => {
   );
 };
 
-export default FormInput;
+export default TextAreaField;

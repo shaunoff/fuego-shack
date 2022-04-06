@@ -33,3 +33,22 @@ export function getBrands({ orderBy }: { orderBy?: Prisma.SortOrder }) {
     orderBy: { updatedAt: orderBy },
   });
 }
+
+export function findBrand({ id }: Pick<Brand, "id">) {
+  return prisma.brand.findUnique({
+    where: { id },
+  });
+}
+
+export function updateBrand({
+  brandId,
+  ...data
+}: Pick<
+  Brand,
+  "name" | "description" | "logoUrl" | "city" | "state" | "country"
+> & { brandId: string }) {
+  return prisma.brand.update({
+    where: { id: brandId },
+    data,
+  });
+}

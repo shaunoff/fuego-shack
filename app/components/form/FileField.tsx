@@ -2,14 +2,23 @@ import { PhotographIcon } from "@heroicons/react/solid";
 import React, { useRef, useState } from "react";
 
 import { useField } from "remix-validated-form";
-import FileInfo from "./FileInfo";
+import FileInfo from "../shared/FileInfo";
 
-const FileField = () => {
+interface FileFieldProps {
+  label: string;
+  name: string;
+}
+
+const FileField: React.FC<FileFieldProps> = ({ label, name }) => {
+  const { error, getInputProps, setTouched } = useField(name);
+  //defaultValue
+  const [defaultValue, setDefaultValue] = useState<string | null>(
+    getInputProps<{ defaultValue?: string }>().defaultValue ?? null
+  );
+
   const [isDragActive, setIsDragActive] = useState(false);
   const [files, setFiles] = useState<FileList | []>([]);
   const input = useRef<HTMLInputElement>(null);
-
-  const { error, getInputProps, setTouched } = useField("logoUrl");
 
   const onDragOver: React.DragEventHandler = (e) => {
     e.preventDefault();
@@ -49,22 +58,52 @@ const FileField = () => {
     }
   };
 
-  //TODO: make this a bit cleaner
-  const filesList = [...files];
+  /**
+   * If there is a defaultValue/string render the FileInfo Component
+   */
+  if (defaultValue) {
+    return (
+      <div className="w-full">
+        <label htmlFor={name} className={styles.label}>
+          {label}
+        </label>
+        <input
+          {...getInputProps({
+            id: name,
+          })}
+          type="text"
+          className="hidden"
+        />
+        <FileInfo
+          url={defaultValue}
+          onRemove={() => setDefaultValue(null)}
+          fileName={defaultValue.split("/").pop() || ""}
+        />
+      </div>
+    );
+  }
+
+  /**
+   * If there is no defaultValue render the file upload input
+   */
   let url;
-  if (filesList.length) {
+  const filesList = [...files];
+
+  if (defaultValue) {
+    url = defaultValue;
+  } else if (filesList.length) {
     url = URL.createObjectURL(filesList[0]);
   }
 
   return (
     <div className="w-full">
-      <label htmlFor="cover-photo" className={styles.label}>
-        Cover photo
+      <label htmlFor={name} className={styles.label}>
+        {label}
       </label>
       <input
         ref={input}
         {...getInputProps({
-          id: "logoUrl",
+          id: name,
         })}
         type="file"
         className="hidden"

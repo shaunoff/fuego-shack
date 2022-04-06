@@ -1,4 +1,5 @@
 import {
+  ErrorBoundaryComponent,
   json,
   Links,
   LiveReload,
@@ -57,3 +58,20 @@ export default function App() {
     </html>
   );
 }
+
+export const ErrorBoundary: ErrorBoundaryComponent = ({ error }) => {
+  console.error(error.message);
+  return (
+    <html>
+      <head>
+        <title>Oh no!</title>
+        <Meta />
+        <Links />
+      </head>
+      <body>
+        Error
+        <Scripts />
+      </body>
+    </html>
+  );
+};
