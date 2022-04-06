@@ -30,10 +30,13 @@ const FileInfo = ({
 
       <div className="flex flex-1 items-center justify-between overflow-hidden truncate rounded-r-md border-t border-r border-b border-gray-300 bg-white">
         <div className="flex-1 truncate px-4 py-2 text-sm">
-          {fileName}
-
           <p className="text-gray-500">
-            {file?.naturalWidth} x {file?.naturalHeight}
+            <span className="font-bold">Width: </span>
+            {file?.naturalWidth} px
+          </p>
+          <p className="text-gray-500">
+            <span className="font-bold">Height: </span>
+            {file?.naturalHeight} px
           </p>
         </div>
         <div className="flex-shrink-0 pr-2">
