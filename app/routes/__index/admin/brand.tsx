@@ -20,7 +20,7 @@ const BrandAdmin = () => {
   const { brands } = useLoaderData<LoaderData>();
 
   return (
-    <div>
+    <>
       <div className="px-4">
         <div className="sm:flex sm:items-center">
           <div className="sm:flex-auto">
@@ -45,7 +45,7 @@ const BrandAdmin = () => {
         </div>
       </div>
       <DrawerOutlet />
-    </div>
+    </>
   );
 };
 
