@@ -49,7 +49,7 @@ export const action: ActionFunction = async ({ request, params }) => {
     // If the value is already a url it doesn't upload and returns the url string.
     const uploadedImage = await uploadCloudinaryImage(stream);
 
-    return uploadedImage.url;
+    return uploadedImage.secure_url;
   };
 
   const fieldValues = await adminBrandValidator.validate(

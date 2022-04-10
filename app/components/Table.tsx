@@ -42,18 +42,18 @@ const Table = ({ brands }: BrandsTableProps) => {
         {brands.map((brand) => (
           <tr key={brand.id}>
             <td className="w-full max-w-0 py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:w-auto sm:max-w-none sm:pl-6">
-              <div className="flex items-center">
-                <div className="h-16 w-16 flex-shrink-0">
+              <dl className="flex items-center">
+                <dd className="h-16 w-16 flex-shrink-0">
                   <img
                     className="h-16 w-16 rounded-full border border-gray-200 object-contain p-1 shadow-md"
                     src={brand.logoUrl ?? ""}
                     alt={brand.name}
                   />
-                </div>
-                <td className="text-md hidden px-3 pl-12 text-left font-bold text-gray-700 lg:table-cell">
+                </dd>
+                <dd className="text-md hidden px-3 pl-12 text-left font-bold text-gray-700 lg:table-cell">
                   {brand.name}
-                </td>
-              </div>
+                </dd>
+              </dl>
               <dl className="font-normal lg:hidden">
                 <dd className="text-md mt-2 truncate font-bold text-gray-700">
                   {brand.name}

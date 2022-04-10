@@ -22,8 +22,6 @@ export const meta: MetaFunction = ({ data, params }) => {
   };
 };
 
-console.log("eee", typeof AdjustmentsIcon);
-
 export const loader: LoaderFunction = async ({ request }) => {
   const userId = await requireUserId(request);
   let url = new URL(request.url);
