@@ -1,4 +1,4 @@
-import { ErrorBoundaryComponent, Outlet, useMatches } from "remix";
+import { ErrorBoundaryComponent, Outlet } from "remix";
 
 //import { useUser } from "~/utils";
 import Sidebar from "~/components/Sidebar";
