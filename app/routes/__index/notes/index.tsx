@@ -8,9 +8,16 @@ import {
 import Filters from "~/components/Filters";
 import { requireUserId } from "~/session.server";
 import { Prisma } from "@prisma/client";
+import { BaseRouteHandle } from "~/hooks/useBaseRouteHandle";
 
 type LoaderData = {
   noteListItems: Awaited<ReturnType<typeof getNoteListItems>>;
+};
+
+export const handle: BaseRouteHandle = {
+  pageTitle: "Notes",
+  subtitle: "These are the sauwsws",
+  Logo: ViewListIcon,
 };
 
 export const loader: LoaderFunction = async ({ request }) => {

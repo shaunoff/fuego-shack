@@ -1,6 +1,6 @@
-import { json, LoaderFunction, Outlet } from "remix";
+import { json, LoaderFunction, MetaFunction, Outlet } from "remix";
 import { getNoteListItems } from "~/models/note.server";
-
+import { AdjustmentsIcon } from "@heroicons/react/outline";
 import { requireUserId } from "~/session.server";
 import { Prisma } from "@prisma/client";
 import Tabs from "~/components/Tabs";
@@ -8,6 +8,21 @@ import Tabs from "~/components/Tabs";
 type LoaderData = {
   noteListItems: Awaited<ReturnType<typeof getNoteListItems>>;
 };
+
+export const handle = {
+  pageTitle: "Administration",
+  subtitle: "This is where you can set all the things",
+  Logo: AdjustmentsIcon,
+};
+
+export const meta: MetaFunction = ({ data, params }) => {
+  return {
+    title: `Fuego Admin`,
+    description: "admin Page",
+  };
+};
+
+console.log("eee", typeof AdjustmentsIcon);
 
 export const loader: LoaderFunction = async ({ request }) => {
   const userId = await requireUserId(request);
