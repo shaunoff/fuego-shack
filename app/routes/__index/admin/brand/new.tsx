@@ -22,7 +22,7 @@ export const action: ActionFunction = async ({ request }) => {
       }
       const uploadedImage = await uploadCloudinaryImage(stream);
 
-      return uploadedImage.url;
+      return uploadedImage.secure_url;
     };
 
     const fieldValues = await adminBrandValidator.validate(
