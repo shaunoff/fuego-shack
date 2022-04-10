@@ -23,7 +23,7 @@ function classNames(...classes: string[]) {
 export default function Tabs() {
   return (
     <div className="mb-4 w-full border-b border-gray-200 bg-white px-4">
-      <div className="sm:hidden">
+      <div className="mb-2 sm:hidden">
         <label htmlFor="tabs" className="sr-only">
           Select a tab
         </label>
